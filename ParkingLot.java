@@ -1,5 +1,3 @@
-package fis_project;
-
 public class ParkingLot {
 	
 	private boolean lleno;
@@ -8,6 +6,11 @@ public class ParkingLot {
 				customer,
 				income;
 	private final int MaxCarros = 120;
+	
+	public ParkingLot() {
+		this.numCarros = 0;
+		this.numFallos = 0;
+	}
 	
 	public boolean isLleno() {
 		return lleno;
@@ -65,15 +68,17 @@ public class ParkingLot {
 	}
 	
 	public void incrementCarros() {
-		
 		this.numCarros += 1;
 		System.out.println("car entered");
 	}
 	
 	public void decrementCarros() {
-		
-		this.numCarros -= 1;
-		System.out.println("car exited");
+		if(this.numCarros > 0) {
+			this.numCarros -= 1;
+			System.out.println("car exited");
+		}else {
+			System.out.println("El estacionamiento esta vacio");
+		}
 	}
 	
 	public void incrementFallas() {
@@ -100,5 +105,4 @@ public class ParkingLot {
 	}
 
 }
-
 

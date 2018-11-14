@@ -13,8 +13,8 @@ public class Window extends JFrame{
 			//this.setSize(800 , 600); //(width , heigth)
 			ParkingLot pl = new ParkingLot();
 			GUIEntrada g1 = new GUIEntrada(pl);
-			GUISalida g2 = new GUISalida(pl);
 			GUIShow g3 = new GUIShow(pl);
+			GUISalida g2 = new GUISalida(pl,g3);
 			this.gs = g2;
 			this.gss = g3;
 			this.add(g1);

@@ -10,10 +10,12 @@ public class GUISalida extends JPanel{
 	private JButton btSalida;
 	private JLabel jlEntrada;
 	private ParkingLot pl;
+	private GUIShow GUIS;
 
-	public GUISalida(ParkingLot pl) {
+	public GUISalida(ParkingLot pl, GUIShow GUIS) {
 		super();
 		this.pl = pl;
+		this.GUIS = GUIS;
 		Dimension pantalla = Toolkit.getDefaultToolkit().getScreenSize();
 		this.setPreferredSize(new Dimension (pantalla.width / 2, pantalla.height / 2));
 		this.btSalida = new JButton("Salida");
@@ -28,7 +30,7 @@ public class GUISalida extends JPanel{
 		
 		this.btSalida.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				pl.decrementCarros();
+				GUIS.setTextField(pl.GenerateRandom());
 				jlEntrada.setVisible(true);
 				System.out.println(pl.getNumCarros());
 				

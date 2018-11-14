@@ -1,4 +1,8 @@
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.time.LocalTime;
+import java.util.Random;
 
 public class ParkingLot {
 	
@@ -6,9 +10,11 @@ public class ParkingLot {
 	private int numCarros,
 				numFallos,
 				customer,
-				income;
+				income,
+				numRandom;
 	private LocalTime time;				
 	private Ticket tickets[];
+	private PrintWriter pw;
 				
 	private final int MaxCarros = 120;
 	
@@ -22,6 +28,16 @@ public class ParkingLot {
 		}*/
 		Ticket t = new Ticket();
 		this.tickets[0] = t;
+		try {
+			this.pw = new PrintWriter(new FileWriter("D:\\ParkingLot.csv"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		this.pw.println("Ventas del día");
+		this.pw.print("Hora de entrada: "+",");
+		this.pw.print("Hora de salida: "+",");
+		this.pw.println("Precio: ");
+		
 	}
 	
 	public boolean isLleno() {
@@ -54,18 +70,41 @@ public class ParkingLot {
 		return MaxCarros - numCarros;
 	}
 	
-	public LocalTime getTime() {
-		return time;
+	public int GenerateRandom() {
+		Random rand = new Random();
+		int r;
+		if(this.numCarros>0) {
+			r = rand.nextInt(this.numCarros)+1;
+			if(this.tickets[r]==null) {
+				GenerateRandom();
+			}
+			return r;
+		}else {
+			return 0;
+		}
+		
 	}
 	
 	public double calculatePrice(int numTicket) {
 		if(this.tickets[numTicket]!=null) {
 			this.tickets[numTicket].setTimeExit(LocalTime.now());
 			this.tickets[numTicket].setPrice(this.tickets[numTicket].setTimeSpent()*2);
+			this.income += this.tickets[numTicket].getPrice();
+			printInExcel(numTicket);
 			return this.tickets[numTicket].getPrice();
 		}else {
 			return 0;
 		}
+	}
+	
+	public void printInExcel(int numTicket) {
+		this.pw.print(this.tickets[numTicket].getTimeEnter() + ",");
+		this.pw.print(this.tickets[numTicket].getTimeExit() + ",");
+		this.pw.println(this.tickets[numTicket].getPrice());
+	}
+	
+	public void closeFile() {
+		this.pw.close();
 	}
 	
 	public void deleteCar(int numTicket) {
@@ -78,25 +117,6 @@ public class ParkingLot {
 			System.out.println("El estacionamiento esta vacio");
 		}
 	}
-	
-	/*public double getDollars(double tiempoFinal, double tiempoInicial) {
-		
-		//double precio = 15;
-		double time = tiempoFinal - tiempoInicial;
-		double total = 0.00;
-		
-		for( int i = 0; i < 24; i++) {
-			
-			if ( time <= (i+1) * 60) {
-				
-				total = (i+1) * 15;
-				break;
-			}
-		}
-		
-		return total;
-		
-	}*/
 	
 	public double getPesos(int numTicket) {
 		double price = this.tickets[numTicket].getPrice();
@@ -114,36 +134,10 @@ public class ParkingLot {
 		this.numCarros += 1;
 	}
 	
-	public void decrementCarros() {
-		if(this.numCarros > 0) {
-			this.numCarros -= 1;
-		}else {
-			System.out.println("El estacionamiento esta vacio");
-		}
-	}
-	
 	public void incrementFallas() {
 		
 		this.numFallos += 1;
 		System.out.println("car did not enter");
-	}
-
-
-	public static void main(String[] args) {
-		
-		ParkingLot pl = new ParkingLot();
-		
-		System.out.println(pl.isLleno());
-		System.out.println(pl.getLugaresDisponibles());
-		pl.incrementCarros();
-		System.out.println(pl.getLugaresDisponibles());
-		pl.decrementCarros();
-		System.out.println(pl.getLugaresDisponibles());
-		
-		//System.out.println(pl.getPesos(65, 0));
-		System.out.println(pl.time);
-		
-		
 	}
 
 }

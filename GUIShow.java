@@ -10,7 +10,8 @@ import javax.swing.JTextField;
 
 public class GUIShow extends JPanel{
 	private ParkingLot pl;
-	private JButton btGenerate;
+	private JButton btGenerate,
+					btGenerateFile;
 	private JTextField tfNumTicket;
 	double price;
 
@@ -20,24 +21,39 @@ public class GUIShow extends JPanel{
 		Dimension pantalla = Toolkit.getDefaultToolkit().getScreenSize();
 		this.setPreferredSize(new Dimension (pantalla.width / 2, pantalla.height));
 		this.btGenerate = new JButton("Generar precio");
+		this.btGenerateFile = new JButton("Generar documento");
 		this.tfNumTicket = new JTextField("0");
+		this.tfNumTicket.setEditable(false);
 		this.setLayout(null);
 		this.btGenerate.setBounds(200,130, 200, 100);
+		this.btGenerateFile.setBounds(500,130, 200, 100);
 		this.tfNumTicket.setBounds(200,260, 200, 40);
 		this.add(this.btGenerate);
+		this.add(this.btGenerateFile);
 		this.add(this.tfNumTicket);
+		this.price = 0;
 		
 		this.btGenerate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				price = 0;
-					if(tfNumTicket.getText()!=null) {
-						price = pl.calculatePrice(Integer.parseInt(tfNumTicket.getText()));
-						pl.deleteCar(Integer.parseInt(tfNumTicket.getText()));
-					}
+				if(Integer.parseInt(tfNumTicket.getText())!=0) {
+					price = pl.calculatePrice(Integer.parseInt(tfNumTicket.getText()));
+					pl.deleteCar(Integer.parseInt(tfNumTicket.getText()));
+				}
 			}
 		});
 		
+		this.btGenerateFile.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				pl.closeFile();
+			}
+		});
+		
+		
 		this.setLayout(null);
+	}
+	
+	public void setTextField(int num) {
+		this.tfNumTicket.setText(""+num);
 	}
 	
 	public void paintComponent(Graphics g) {
@@ -57,7 +73,7 @@ public class GUIShow extends JPanel{
 		g.drawString("Lugares disponibles: ", 30, 120);
 		g.drawString(""+pl.getLugaresDisponibles(), 35, 150);
 		g.drawString("Ganancia: ", 30, 190);
-		g.drawString(""+pl.getIncome(), 35, 220);
+		g.drawString("$ "+pl.getIncome(), 35, 220);
 		g.drawString("Precio: ", 30, 260);
 		g.drawString("$ "+this.price, 35, 290);
 		//g.drawString(""+pl.getTime(), 800, 50);

@@ -14,6 +14,14 @@ public class Ticket {
 		this.timeExit = t;
 	}
 	
+	public LocalTime getTimeEnter() {
+		return this.timeEnter;
+	}
+	
+	public LocalTime getTimeExit() {
+		return this.timeExit;
+	}
+	
 	public void setPrice(double price) {
 		this.price= price;
 	}

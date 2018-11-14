@@ -5,16 +5,19 @@ import javax.swing.JFrame;
 
 public class Window extends JFrame{
 		private GUISalida gs;
+		private GUIShow gss;
 		public Window() {
 			super("Parkinglot");
 			this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			this.setLocation(0,0);
 			//this.setSize(800 , 600); //(width , heigth)
 			ParkingLot pl = new ParkingLot();
 			GUIEntrada g1 = new GUIEntrada(pl);
 			GUISalida g2 = new GUISalida(pl);
+			GUIShow g3 = new GUIShow(pl);
 			this.gs = g2;
-			this.add(g1); //agregar un panelDibujo al contenedor de la ventana
-			//this.add(new PanelControles(pd), BorderLayout.WEST); //agregamos el panel controles en el oeste de la ventana
+			this.gss = g3;
+			this.add(g1);
 			this.pack();
 			this.setVisible(true);
 			
@@ -22,14 +25,14 @@ public class Window extends JFrame{
 		public GUISalida getGS() {
 			return this.gs;
 		}
+		public GUIShow getGSS() {
+			return this.gss;
+		}
 		public static void main(String[] args) {
-			//JFrame ventana = new JFrame("Mi primer ventana en Java");
-			//ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-			//ventana.setVisible(true);
 			
 			Window myWindow  = new Window();
 			Window2 myWindow2 = new Window2(myWindow.getGS());
-			
+			Window3 myWindow3 = new Window3(myWindow.getGSS());
 			
 		}
 

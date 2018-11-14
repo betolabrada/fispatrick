@@ -1,3 +1,5 @@
+import java.time.LocalTime;
+
 public class ParkingLot {
 	
 	private boolean lleno;
@@ -5,11 +7,21 @@ public class ParkingLot {
 				numFallos,
 				customer,
 				income;
+	private LocalTime time;				
+	private Ticket tickets[];
+				
 	private final int MaxCarros = 120;
 	
 	public ParkingLot() {
 		this.numCarros = 0;
 		this.numFallos = 0;
+		this.time = LocalTime.now();
+		this.tickets = new Ticket[120];
+		/*for(int i = 0; i<120; i++) {
+			tickets[i] = null;
+		}*/
+		Ticket t = new Ticket();
+		this.tickets[0] = t;
 	}
 	
 	public boolean isLleno() {
@@ -17,7 +29,6 @@ public class ParkingLot {
 	}
 	
 	public void setLleno(boolean bool) {
-		
 		this.lleno = bool;
 	}
 
@@ -43,7 +54,32 @@ public class ParkingLot {
 		return MaxCarros - numCarros;
 	}
 	
-	public double getDollars(double tiempoFinal, double tiempoInicial) {
+	public LocalTime getTime() {
+		return time;
+	}
+	
+	public double calculatePrice(int numTicket) {
+		if(this.tickets[numTicket]!=null) {
+			this.tickets[numTicket].setTimeExit(LocalTime.now());
+			this.tickets[numTicket].setPrice(this.tickets[numTicket].setTimeSpent()*2);
+			return this.tickets[numTicket].getPrice();
+		}else {
+			return 0;
+		}
+	}
+	
+	public void deleteCar(int numTicket) {
+		if(this.tickets[numTicket]!=null) {
+			this.tickets[numTicket] = null;
+		}
+		if(this.numCarros > 0) {
+			this.numCarros -= 1;
+		}else {
+			System.out.println("El estacionamiento esta vacio");
+		}
+	}
+	
+	/*public double getDollars(double tiempoFinal, double tiempoInicial) {
 		
 		//double precio = 15;
 		double time = tiempoFinal - tiempoInicial;
@@ -60,22 +96,27 @@ public class ParkingLot {
 		
 		return total;
 		
-	}
+	}*/
 	
-	public double getPesos(double tiempoFinal, double tiempoInicial) {
-		
-		return getDollars(tiempoFinal, tiempoInicial) * 19.34;
+	public double getPesos(int numTicket) {
+		double price = this.tickets[numTicket].getPrice();
+		return price;
 	}
 	
 	public void incrementCarros() {
+		Ticket t = new Ticket();
+		for(int i = 0; i<120; i++) {
+			if(this.tickets[i]==null) {
+				this.tickets[i] = t;
+				break;
+			}
+		}
 		this.numCarros += 1;
-		System.out.println("car entered");
 	}
 	
 	public void decrementCarros() {
 		if(this.numCarros > 0) {
 			this.numCarros -= 1;
-			System.out.println("car exited");
 		}else {
 			System.out.println("El estacionamiento esta vacio");
 		}
@@ -99,10 +140,10 @@ public class ParkingLot {
 		pl.decrementCarros();
 		System.out.println(pl.getLugaresDisponibles());
 		
-		System.out.println(pl.getPesos(65, 0));
+		//System.out.println(pl.getPesos(65, 0));
+		System.out.println(pl.time);
 		
 		
 	}
 
 }
-
